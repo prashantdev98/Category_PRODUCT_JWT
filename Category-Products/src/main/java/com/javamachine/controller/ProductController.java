@@ -7,6 +7,7 @@ import com.javamachine.repository.ProductRepository;
 import com.javamachine.service.ProductService;
 import com.javamachine.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ProductController {
     private ProductRepository productRepository; 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public List<Product> getProducts(){
         return productService.getProducts();
     }

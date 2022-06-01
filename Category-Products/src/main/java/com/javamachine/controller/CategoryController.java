@@ -9,6 +9,7 @@ import com.javamachine.repository.CategoryRepository;
 import com.javamachine.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Category> getCategory(){
         return categoryService.getCategories();
     }

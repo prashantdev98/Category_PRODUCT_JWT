@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,21 +17,26 @@ import javax.persistence.Table;
 @Table(name = "USER_TBL")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String userName;
     private String password;
     private String email;
+    private boolean isActive;
+    private String roles;
     
     public User() {
 		
 	}
 	
     
-	public User(int id, String userName, String password, String email) {
+	public User(int id, String userName, String password, String email,boolean isActive,String roles) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
 		this.email = email;
+		this.isActive = isActive;
+		this.roles = roles;
 	}
 	
 	
@@ -56,6 +63,26 @@ public class User {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+
+	public String getRoles() {
+		return roles;
+	}
+
+
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
     
     

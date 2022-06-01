@@ -1,6 +1,7 @@
 package com.javamachine.securtiy;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.javamachine.repository.UserRepository;
+import com.javamachine.util.UserDetailsConvertor;
 
 @Service
 public class MyUserDetailService implements UserDetailsService{
@@ -27,8 +29,9 @@ public class MyUserDetailService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		com.javamachine.entity.User user = userRepository.findByUserName(username);
-		return new User(user.getUserName(),user.getPassword(),new ArrayList<>());
+		Optional<com.javamachine.entity.User> user = userRepository.findByUserName(username);
+//		return new User(user.getUserName(),user.getPassword(),new ArrayList<>());
+		return user.map(UserDetailsConvertor::new).orElseThrow(()-> new UsernameNotFoundException(username+" Does not Exist"));
 	}
 	
 }
