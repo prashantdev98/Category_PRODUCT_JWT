@@ -41,7 +41,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 //		 http.csrf().disable().authorizeHttpRequests().antMatchers("/authenticate").permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/authenticate").permitAll().and().authorizeRequests().antMatchers("/category/**","/products/**").authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/authenticate","/user/login").permitAll().and().authorizeRequests().antMatchers("/category/**","/products/**").authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		 http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
 	}
 	

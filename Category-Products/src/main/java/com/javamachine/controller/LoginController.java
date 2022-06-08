@@ -3,6 +3,7 @@ package com.javamachine.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,9 @@ public class LoginController {
 	 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 	
 //	@RequestMapping(value = "/hello")
 //	public String loginMEthod() {
@@ -32,6 +36,8 @@ public class LoginController {
 	 @PostMapping("/authenticate")
 	    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
 	        try {
+//	        	System.out.println(authRequest.getPassword()+authRequest.getUserName()+"***************************");
+	        		
 	            authenticationManager.authenticate(
 	                    new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword())
 	            );

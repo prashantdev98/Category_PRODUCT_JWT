@@ -4,11 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 
 @Data
 @AllArgsConstructor
@@ -23,14 +35,27 @@ public class User {
     private String password;
     private String email;
     private boolean isActive;
-    private String roles;
-    
+//    private String roles;
+   
+  
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {
+    		
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "user_groups",
+            joinColumns =@JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"
+    ))
+    private Set<Roles> roles= new HashSet<>();
+
     public User() {
 		
 	}
 	
     
-	public User(int id, String userName, String password, String email,boolean isActive,String roles) {
+    public User(int id, String userName, String password, String email, boolean isActive, Set<Roles> roles) {
+		super();
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -38,7 +63,17 @@ public class User {
 		this.isActive = isActive;
 		this.roles = roles;
 	}
-	
+
+
+//	public User(int id, String userName, String password, String email,boolean isActive,String roles) {
+//		this.id = id;
+//		this.userName = userName;
+//		this.password = password;
+//		this.email = email;
+//		this.isActive = isActive;
+////		this.roles = roles;
+//	}
+//	
 	
 	public int getId() {
 		return id;
@@ -76,14 +111,25 @@ public class User {
 	}
 
 
-	public String getRoles() {
+	public Set<Roles> getRoles() {
 		return roles;
 	}
 
 
-	public void setRoles(String roles) {
+	public void setRoles(Set<Roles> roles) {
 		this.roles = roles;
 	}
+
+//
+//	public String getRoles() {
+//		return roles;
+//	}
+//
+//
+//	public void setRoles(String roles) {
+//		this.roles = roles;
+//	}
     
+	
     
 }

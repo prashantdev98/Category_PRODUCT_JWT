@@ -30,6 +30,7 @@ public class MyUserDetailService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		Optional<com.javamachine.entity.User> user = userRepository.findByUserName(username);
+		System.out.println(username+"//************************************"+user.get().getUserName());
 //		return new User(user.getUserName(),user.getPassword(),new ArrayList<>());
 		return user.map(UserDetailsConvertor::new).orElseThrow(()-> new UsernameNotFoundException(username+" Does not Exist"));
 	}
