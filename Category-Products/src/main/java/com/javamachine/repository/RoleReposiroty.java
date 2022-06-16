@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.javamachine.entity.Roles;
 
 @Repository
-public interface RoleReposiroty extends JpaRepository<Roles,Integer>{
+public interface RoleReposiroty extends JpaRepository<Roles,Long>{
 
 	Set<Roles> findByCode(String name);
+	boolean existsRolesByCode(String code);
 }

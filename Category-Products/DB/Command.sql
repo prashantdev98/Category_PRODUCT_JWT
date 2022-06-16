@@ -1,0 +1,2 @@
+INSERT INTO user_role VALUES(101,"ADMIN","ADMIN GROUP");
+DELETE FROM user_tbl WHERE id=1;

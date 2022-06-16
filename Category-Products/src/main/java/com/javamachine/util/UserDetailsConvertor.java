@@ -26,16 +26,16 @@ public class UserDetailsConvertor implements UserDetails{
     private Set<GrantedAuthority> authorities;
     
 	
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	public UserDetailsConvertor(User user) {
-		System.out.println(user.getRoles());
+//		System.out.println(user.getRoles());
 		this.userName = user.getUserName();
 		this.password = user.getPassword();
 		this.isActive = user.isActive();
 //		this.authorities = Arrays.stream(user.getRoles().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 		this.authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toSet());
-		System.out.println( Arrays.toString(this.authorities.toArray())+"/*/*/*/*/*/*/*//*/**/*/*/*");
+//		System.out.println( Arrays.toString(this.authorities.toArray())+"/*/*/*/*/*/*/*//*/**/*/*/*");
 	}
 	
 
@@ -47,7 +47,6 @@ public class UserDetailsConvertor implements UserDetails{
 
 	@Override
 	public String getPassword() {
-		
 		return password;
 	}
 

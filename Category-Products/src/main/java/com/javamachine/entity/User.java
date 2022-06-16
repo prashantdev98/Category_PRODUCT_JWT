@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,6 +34,7 @@ public class User {
     private int id;
     private String userName;
     private String password;
+    @Column(unique = true)
     private String email;
     private boolean isActive;
 //    private String roles;

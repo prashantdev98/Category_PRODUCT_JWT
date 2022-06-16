@@ -1,5 +1,8 @@
 package com.javamachine.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthRequest {
 
-    private String userName;
+	@NotEmpty(message = "Email should not be Empty")
+	@Email(message = "give proper Email Format")
+    private String email;
+	
+	@NotEmpty(message = "password should not be Empty")
     private String password;
     
     public AuthRequest() {
@@ -18,15 +25,20 @@ public class AuthRequest {
     
 	public AuthRequest(String userName, String password) {
 		super();
-		this.userName = userName;
+		this.email = userName;
 		this.password = password;
 	}
-	public String getUserName() {
-		return userName;
+	
+	public String getEmail() {
+		return email;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
+
 	public String getPassword() {
 		return password;
 	}

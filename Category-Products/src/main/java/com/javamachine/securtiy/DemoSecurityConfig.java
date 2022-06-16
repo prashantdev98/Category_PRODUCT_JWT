@@ -41,15 +41,21 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 //		 http.csrf().disable().authorizeHttpRequests().antMatchers("/authenticate").permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/authenticate","/user/login").permitAll().and().authorizeRequests().antMatchers("/category/**","/products/**").authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers("/authenticate","/user/login","/user/signUp","/user/signUp/normal").permitAll().and().authorizeRequests().antMatchers("/category/**","/products/**").authenticated().and().exceptionHandling().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		 http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
 	}
 	
 
 	
+//	@Bean
+//	public PasswordEncoder passwordEncoder() {
+//		return NoOpPasswordEncoder.getInstance();
+//	}
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+		BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+		return encode;
 	}
 
 	
@@ -58,7 +64,7 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter{
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-  
+//  
 //    @Bean
 //    public BCryptPasswordEncoder passwordEncoderE() {
 //    	return new BCryptPasswordEncoder();

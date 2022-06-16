@@ -4,8 +4,12 @@ package com.javamachine.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.javamachine.repository.UserRepository;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +20,10 @@ import java.util.function.Function;
 public class JwtUtil {
 
 	  private String secret = "javatechie";
-
+	  
+	  @Autowired
+	  UserRepository userRepository;
+	  
 	    public String extractUsername(String token) {
 	        return extractClaim(token, Claims::getSubject);
 	    }
@@ -51,6 +58,8 @@ public class JwtUtil {
 
 	    public Boolean validateToken(String token, UserDetails userDetails) {
 	        final String username = extractUsername(token);
-	        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	        
+//	        System.out.println(username+")))))))))))))))))))))))))))))))))))))))))))))0"+userDetails.getUsername());
+	        return (username.equals(userRepository.findByEmail(username).get().getEmail()) && !isTokenExpired(token));
 	    }
 }

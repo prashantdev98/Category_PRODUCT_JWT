@@ -27,12 +27,12 @@ public class MyUserDetailService implements UserDetailsService{
 	
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
-		Optional<com.javamachine.entity.User> user = userRepository.findByUserName(username);
-		System.out.println(username+"//************************************"+user.get().getUserName());
+		Optional<com.javamachine.entity.User> user = userRepository.findByEmail(email);
+		System.out.println(email+"//************************************"+user.get().getPassword());
 //		return new User(user.getUserName(),user.getPassword(),new ArrayList<>());
-		return user.map(UserDetailsConvertor::new).orElseThrow(()-> new UsernameNotFoundException(username+" Does not Exist"));
+		return user.map(UserDetailsConvertor::new).orElseThrow(()-> new UsernameNotFoundException(email+" Does not Exist"));
 	}
 	
 }
