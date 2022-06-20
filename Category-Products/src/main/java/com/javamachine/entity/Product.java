@@ -5,7 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -17,7 +21,10 @@ public class Product {
     @Column(name = "productId")
     private int productId;
     private String productName;
-	public int getProductId() {
+    @JsonIgnore
+	@ManyToMany(mappedBy = "products")
+    private List<Cart> cart;
+    public int getProductId() {
 		return productId;
 	}
 	public void setProductId(int productId) {
@@ -29,6 +36,13 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
+	public List<Cart> getCart() {
+		return cart;
+	}
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
+	}
+	
 
     
 

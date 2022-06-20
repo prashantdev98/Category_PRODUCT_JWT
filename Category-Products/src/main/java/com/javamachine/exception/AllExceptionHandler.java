@@ -88,4 +88,25 @@ public class AllExceptionHandler {
 		errorMap.put("errorMessage",ex.getMessage());
 		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ResponseEntity<?> ExceptionOfRole(ProductNotFoundException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage",ex.getMessage());
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(CartEmptyException.class)
+	public ResponseEntity<?> ExceptionOfRole(CartEmptyException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage",ex.getMessage());
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(CartNotFoundException.class)
+	public ResponseEntity<?> ExceptionOfRole(CartNotFoundException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage",ex.getMessage());
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
 } 
