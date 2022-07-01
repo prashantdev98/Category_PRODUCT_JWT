@@ -90,7 +90,7 @@ public class UserController {
 	}
 	
 	
-	@DeleteMapping({"/admin/delete/{id}","/admin/delete/"})
+	@DeleteMapping({"/admin/delete/{id}"})
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public ResponseEntity<?> deleteUserById(@PathVariable(value = "id") Optional<Integer> id)throws UserNotFoundException {
 		 return new ResponseEntity<>( userService.deleteUserById(id.get()),HttpStatus.OK);

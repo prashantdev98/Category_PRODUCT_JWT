@@ -26,14 +26,14 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('CUSTOMER')")
     public List<Category> getCategory(){
         return categoryService.getCategories();
     }
     
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?>  getCategory(@PathVariable int id)throws CategoryNotFoundException{
+    public ResponseEntity<?>  getCategoryById(@PathVariable int id)throws CategoryNotFoundException{
     	
 		return new ResponseEntity<> (categoryService.getCategory(id),HttpStatus.OK);
     	

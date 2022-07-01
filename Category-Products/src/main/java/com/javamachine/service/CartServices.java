@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javamachine.dto.CartDto;
+import com.javamachine.dto.EmailSenderDto;
 import com.javamachine.entity.Cart;
 import com.javamachine.entity.Product;
+import com.javamachine.entity.User;
 import com.javamachine.exception.CartEmptyException;
+import com.javamachine.exception.CartNotFoundException;
 import com.javamachine.exception.ProductNotFoundException;
 import com.javamachine.repository.CartRepository;
 import com.javamachine.repository.ProductRepository;
 import com.javamachine.repository.UserRepository;
+import com.javamachine.util.EmailSender;
 import com.javamachine.util.SecurityUtils;
 
 @Service
@@ -28,8 +32,11 @@ public class CartServices {
     @Autowired
     private CartRepository cartRepository;
     
+    @Autowired 
+    private EmailSender emailSender;
 	
-	public CartDto assignProductToUser(int productId) throws ProductNotFoundException{
+	
+    public CartDto assignProductToUser(int productId) throws ProductNotFoundException{
     	if(!productRepository.existsById(productId)) {
     		throw new ProductNotFoundException("Product does not exits");
     	}
@@ -89,9 +96,9 @@ public class CartServices {
 		return responseCart;
 	}
 	
-	public CartDto getCartByName(String cartName) throws CartEmptyException{
+	public CartDto getCartByName(String cartName) throws CartNotFoundException, CartEmptyException{
 		if(!cartRepository.existsCartByCartName(cartName)) {
-			throw new CartEmptyException("Cart is Not present");
+			throw new CartNotFoundException("Cart is Not present");
 		}
 		Cart cart = cartRepository.findByCartName(cartName);
 		if(cart.getProducts().isEmpty()) {
@@ -102,5 +109,32 @@ public class CartServices {
 		responseCart.setCartName(cart.getCartName());
 		responseCart.setProductList(cart.getProducts());
 		return responseCart;
+	}
+	
+	public String deleteCartById(int cartId) throws CartNotFoundException{
+		if(!cartRepository.existsCartByCartId(cartId)) {
+			throw new CartNotFoundException("Cart is Not present");
+		}
+		cartRepository.deleteById(cartId);
+		return "cart "+cartId+" is DELETED";
+	}
+	
+	public String placeOrderByCustomer() {
+		Cart cart = userRepository.findByEmail(SecurityUtils.getCurrentUsername().get()).get().getCart();
+		EmailSenderDto mailData = new EmailSenderDto();
+		mailData.setEmailSender(null);
+		mailData.setEmailReceiver(SecurityUtils.getCurrentUsername().get());
+		mailData.setOrderList(cart.getProducts());
+		mailData.setEmailSubject("You are receiving Products in your cart");
+		emailSender.sendSimpleMail(mailData);
+		return "email Sent to "+SecurityUtils.getCurrentUsername().get() ;
+	}
+	
+	public User createCartForNewUser(User user) {
+		Cart cart = new Cart();
+		cart.setCartName(user.getUserName()+"CART");
+		cart.setUser(user);
+		user.setCart(cart);
+		return user;
 	}
 }

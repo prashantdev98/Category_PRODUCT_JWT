@@ -8,9 +8,13 @@ import org.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class AllExceptionHandler {
@@ -28,6 +32,20 @@ public class AllExceptionHandler {
 	public ResponseEntity<?> ExceptionOfLoginDetail(HttpMessageNotReadableException ex){
 		Map<String , String> errorMap = new HashMap<String, String>();
 		errorMap.put("errorMessage","json format invalid");
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<?> ExceptionOfLoginDetail(MethodArgumentTypeMismatchException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage","check URL");
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value = MissingServletRequestParameterException.class)
+	public ResponseEntity<?> ExceptionOfLoginDetail(MissingServletRequestParameterException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage","PARAMS MISSING");
 		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
 	}
 	
@@ -107,6 +125,13 @@ public class AllExceptionHandler {
 	public ResponseEntity<?> ExceptionOfRole(CartNotFoundException ex){
 		Map<String , String> errorMap = new HashMap<String, String>();
 		errorMap.put("errorMessage",ex.getMessage());
+		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> ExceptionOfRole(AccessDeniedException ex){
+		Map<String , String> errorMap = new HashMap<String, String>();
+		errorMap.put("errorMessage","Access Denied");
 		return new ResponseEntity<>(errorMap,HttpStatus.BAD_REQUEST);
 	}
 } 

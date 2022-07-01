@@ -43,6 +43,9 @@ public class UserService {
 	@Autowired
 	RoleReposiroty roleReposiroty;
 	
+	@Autowired
+	CartServices cartServices;
+	
 	public User saveEncryptedUser(UserDto userDto) throws UserAlreadyExistException{
 		
 		User saveUser = new User();
@@ -55,6 +58,7 @@ public class UserService {
 //		saveUser.setRoles(role.getRoleName());
 		saveUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
 //		saveUser.setPassword(user.getPassword());
+		
 		return userRepository.save(saveUser);
 	}
 	
@@ -70,6 +74,7 @@ public class UserService {
 		saveUser.setRoles(role);
 //		saveUser.setRoles(role.getRoleName());
 		saveUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		saveUser = cartServices.createCartForNewUser(saveUser);
 //		saveUser.setPassword(user.getPassword());
 		return userRepository.save(saveUser);
 	}

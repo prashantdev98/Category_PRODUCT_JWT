@@ -37,17 +37,48 @@ public class ProductController {
         return productService.getProduct(id);
     }
 
-	
+    @GetMapping("/full/productName")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<?> getProductByName(@RequestParam("productName") String productName) throws ProductNotFoundException{
+        return new ResponseEntity<>(productService.getProductByName(productName),HttpStatus.OK);
+    }
+    
+    @GetMapping("/between")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<?> getProductByNameBetween(@RequestParam("productName") String productName) throws ProductNotFoundException{
+        return new ResponseEntity<>(productService.getProductByNameBetween(productName),HttpStatus.OK);
+    }
+    
+    
+    @GetMapping("/startsWith")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<?> getProductByNameStartsWith(@RequestParam("productName") String productName) throws ProductNotFoundException{
+        return new ResponseEntity<>(productService.getProductByNameStartsWith(productName),HttpStatus.OK);
+    }
+    
+
+    @GetMapping("/endsWith")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity<?> getProductByNameEndsWith(@RequestParam("productName") String productName) throws ProductNotFoundException{
+        return new ResponseEntity<>(productService.getProductByNameEndsWith(productName),HttpStatus.OK);
+    }
+    
     
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product addProduct(@RequestBody Product product){
         return productService.addProduct(product);
     }
+    
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product editProduct(@PathVariable int id,@RequestBody Product product){
         return productService.updateProduct(id,product);
     }
+    
+    
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteProduct(@PathVariable int id){
     	productService.deleteProduct(id);
     }
